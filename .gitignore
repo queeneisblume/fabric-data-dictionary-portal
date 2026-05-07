@@ -1,0 +1,24 @@
+# Python / notebook runtime
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local secrets / environment
+.env
+*.log
+*.tmp
+*.bak
+
+# Do not commit data or Fabric outputs
+data/
+exports/
+staging/
+*.parquet
+*.delta/
+*.csv
+*.xlsx
+
+# Power BI binary files are intentionally excluded.
+# Keep theme/DAX/docs in Git instead.
+*.pbix
+*.pbit
