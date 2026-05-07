@@ -2,13 +2,13 @@
 
 ## Design principle
 
-The portal separates four concerns:
+Portal นี้แยก concerns หลักออกเป็น 4 ส่วน:
 
 ```text
 Config            = what to scan
-Manual definition = what business users want to describe
-Auto metadata      = what actually exists in Fabric
-Power BI tables    = curated current-state tables
+Manual definition = สิ่งที่ business users ต้องการอธิบาย
+Auto metadata      = สิ่งที่มีอยู่จริงใน Fabric
+Power BI tables    = curated current-state tables สำหรับ report
 ```
 
 ## Table layers
@@ -19,7 +19,7 @@ Power BI tables    = curated current-state tables
 governance.cfg_metadata_source
 ```
 
-Defines each active workspace/lakehouse/schema source.
+กำหนด active workspace/lakehouse/schema source แต่ละรายการ
 
 ### Manual source tables
 
@@ -28,7 +28,7 @@ governance.manual_table_definition
 governance.manual_column_definition
 ```
 
-Loaded from SharePoint Excel or another managed source.
+โหลดจาก SharePoint Excel หรือ managed source อื่น ๆ
 
 ### Staging scan logs
 
@@ -37,7 +37,7 @@ governance.stg_table_metadata
 governance.stg_column_metadata
 ```
 
-Append scan output by `sync_run_id`. Keep with retention.
+Append scan output แยกตาม `sync_run_id` และควบคุมปริมาณข้อมูลด้วย retention
 
 ### Current-state tables
 
@@ -46,7 +46,7 @@ governance.dim_data_object
 governance.dim_column
 ```
 
-Always overwritten with latest metadata + latest manual definition.
+Overwrite ทุกครั้งด้วย latest metadata + latest manual definition
 
 ### Report-ready tables
 
@@ -57,7 +57,7 @@ governance.rpt_manual_table_orphan
 governance.rpt_manual_column_orphan
 ```
 
-Designed for Power BI usage.
+ออกแบบมาเพื่อใช้ใน Power BI
 
 ## Recommended lifecycle
 
