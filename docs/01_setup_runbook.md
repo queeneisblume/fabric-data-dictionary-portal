@@ -2,7 +2,7 @@
 
 ## 1. Prepare Fabric Lakehouse
 
-Create or use a monitoring/governance Lakehouse, for example:
+สร้างหรือใช้ monitoring/governance Lakehouse เช่น:
 
 ```text
 lh_monitoring_data
@@ -22,9 +22,9 @@ Expected path:
 Files/data_dictionary/config/cfg_metadata_source.csv
 ```
 
-Do not commit the real CSV to GitHub.
+อย่า commit real CSV ขึ้น GitHub
 
-Use `templates/cfg_metadata_source_template.md` for required fields.
+ดู required fields ได้จาก `templates/cfg_metadata_source_template.md`
 
 Run:
 
@@ -40,7 +40,7 @@ Expected path:
 Files/data_dictionary/manual/manual_data_dictionary.xlsx
 ```
 
-Do not commit the real Excel file to GitHub.
+อย่า commit real Excel file ขึ้น GitHub
 
 Run:
 
@@ -91,4 +91,4 @@ Run:
 notebooks/04_retention_and_change_tracking.ipynb
 ```
 
-This keeps staging tables compact and appends schema/quality history.
+ขั้นตอนนี้ช่วย keep staging tables ให้ compact และ append schema/quality history
