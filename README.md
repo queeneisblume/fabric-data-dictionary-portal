@@ -1,2 +1,70 @@
-# fabric-data-dictionary-portal
-Microsoft Fabric-native end-to-end data dictionary portal
+# Fabric Data Dictionary Portal
+
+Repository สำหรับสร้าง **Data Dictionary Portal** บน Microsoft Fabric + Power BI
+
+## What this repository contains
+
+- Fabric notebooks in `.ipynb` format
+- Mermaid workflow code
+- PNG workflow diagrams
+- Markdown implementation instructions
+- Power BI theme and DAX measure guide
+- Template documentation for config/manual dictionary structures
+
+## What this repository intentionally excludes
+
+- Demo data files
+- Production metadata exports
+- Manual dictionary Excel files
+- Staging output files
+- Delta/Parquet files
+- PBIX/PBIT binary files
+- Secrets, tokens, workspace credentials
+
+## Target architecture
+
+```text
+SharePoint manual dictionary
+        +
+Fabric metadata scan from configured workspace/lakehouse/schema
+        ↓
+governance.stg_* append scan logs
+        ↓
+governance.dim_* current-state tables
+        ↓
+governance.rpt_* report-ready tables
+        ↓
+Power BI Data Dictionary Portal
+```
+
+## Recommended run order
+
+```text
+1. notebooks/00_load_config.ipynb
+2. notebooks/01_load_manual_definition.ipynb
+3. notebooks/02_scan_metadata_to_staging.ipynb
+4. notebooks/03_build_gold_current_tables.ipynb
+5. notebooks/04_retention_and_change_tracking.ipynb  optional
+```
+
+## Power BI tables
+
+Use these tables for the semantic model:
+
+```text
+governance.dim_data_object
+governance.dim_column
+governance.rpt_data_dictionary_search
+governance.rpt_missing_definition
+governance.fact_metadata_sync_run
+governance.rpt_manual_table_orphan
+governance.rpt_manual_column_orphan
+```
+
+Main relationship:
+
+```text
+dim_data_object[data_object_id] 1:* dim_column[data_object_id]
+```
+
+`rpt_data_dictionary_search` is intentionally denormalized and can be used as the main search table without relationships.
