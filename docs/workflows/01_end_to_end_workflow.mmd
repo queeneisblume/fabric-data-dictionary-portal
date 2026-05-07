@@ -1,0 +1,35 @@
+flowchart TD
+    A[SharePoint Excel<br/>manual dictionary] --> B[Copy to OneLake Files]
+    B --> C[Notebook 01<br/>Load manual definition]
+    C --> C1[governance.manual_table_definition]
+    C --> C2[governance.manual_column_definition]
+
+    D[governance.cfg_metadata_source] --> E[Notebook 02<br/>Scan metadata]
+    E --> F[Loop active source_id]
+    F --> G[SHOW TABLES<br/>workspace.lakehouse.schema]
+    G --> H[Read Spark table schema]
+    H --> I[governance.stg_table_metadata]
+    H --> J[governance.stg_column_metadata]
+
+    C1 --> K[Notebook 03<br/>Build Gold current]
+    C2 --> K
+    I --> K
+    J --> K
+
+    K --> L[governance.dim_data_object]
+    K --> M[governance.dim_column]
+    K --> N[governance.rpt_data_dictionary_search]
+    K --> O[governance.rpt_missing_definition]
+    K --> P[governance.rpt_manual_table_orphan]
+    K --> Q[governance.rpt_manual_column_orphan]
+    K --> R[governance.fact_metadata_sync_run]
+
+    L --> S[Power BI Semantic Model]
+    M --> S
+    N --> S
+    O --> S
+    P --> S
+    Q --> S
+    R --> S
+
+    S --> T[Power BI Data Dictionary Portal]

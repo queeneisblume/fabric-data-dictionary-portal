@@ -1,0 +1,29 @@
+flowchart TD
+    A[Start metadata scanner] --> B[Generate sync_run_id]
+    B --> C[Read governance.cfg_metadata_source]
+    C --> D[Filter is_active = true]
+    D --> E{For each source_id}
+
+    E --> F[Build namespace<br/>workspace.lakehouse.schema]
+    F --> G[SHOW TABLES IN namespace]
+    G --> H{SHOW TABLES success?}
+
+    H -- No --> I[Append failed source record]
+    I --> E
+
+    H -- Yes --> J[Apply include/exclude regex]
+    J --> K{For each table}
+    K --> L[Read Spark schema]
+    L --> M{Schema read success?}
+
+    M -- No --> N[Append failed table record]
+    N --> K
+
+    M -- Yes --> O[Extract table metadata]
+    M -- Yes --> P[Extract column metadata]
+
+    O --> Q[Append governance.stg_table_metadata]
+    P --> R[Append governance.stg_column_metadata]
+
+    Q --> S[End scanner]
+    R --> S

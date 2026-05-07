@@ -1,0 +1,39 @@
+name: Render Mermaid PNG diagrams
+
+on:
+  push:
+    paths:
+      - 'docs/workflows/*.mmd'
+      - '.github/workflows/render-mermaid-png.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render-mermaid:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Render PNG diagrams
+        run: |
+          for file in docs/workflows/*.mmd; do
+            out="${file%.mmd}.png"
+            mmdc -i "$file" -o "$out" -b transparent
+          done
+
+      - name: Commit rendered PNG diagrams
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Render Mermaid workflow PNG diagrams'
+          file_pattern: docs/workflows/*.png

@@ -1,0 +1,15 @@
+flowchart TD
+    A[Daily metadata sync completed] --> B[Append fact_metadata_sync_run]
+    A --> C[Append fact_definition_quality_snapshot]
+    A --> D[Detect schema changes]
+    D --> E[Append hist_schema_change]
+
+    A --> F{Retention job}
+    F --> G[Keep stg_table_metadata 90 days]
+    F --> H[Keep stg_column_metadata 90 days]
+
+    G --> I[Staging remains useful for debugging]
+    H --> I
+
+    C --> J[Trend: definition coverage]
+    E --> K[Change log: table/column changes]

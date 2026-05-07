@@ -1,0 +1,16 @@
+{
+  "name": "Data Dictionary Portal Theme",
+  "dataColors": [
+    "#1F4E79",
+    "#2F75B5",
+    "#70AD47",
+    "#FFC000",
+    "#A5A5A5",
+    "#ED7D31",
+    "#5B9BD5",
+    "#4472C4"
+  ],
+  "background": "#F7F9FC",
+  "foreground": "#1F2937",
+  "tableAccent": "#1F4E79"
+}

@@ -1,0 +1,24 @@
+flowchart TD
+    A[Latest stg_table_metadata] --> B[Create data_object_id]
+    C[Latest stg_column_metadata] --> D[Create column_id and data_object_id]
+
+    E[manual_table_definition] --> F[Create same table key]
+    G[manual_column_definition] --> H[Create same column key]
+
+    B --> I[Left join table metadata + manual definition]
+    F --> I
+
+    D --> J[Left join column metadata + manual definition]
+    H --> J
+
+    I --> K[Overwrite governance.dim_data_object]
+    J --> L[Overwrite governance.dim_column]
+
+    K --> M[Build rpt_data_dictionary_search]
+    L --> M
+
+    K --> N[Build rpt_missing_definition]
+    L --> N
+
+    F --> O[Build manual table orphan report]
+    H --> P[Build manual column orphan report]
