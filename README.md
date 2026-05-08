@@ -13,13 +13,13 @@ Repository สำหรับสร้าง **Data Dictionary Portal** บน M
 
 ## สิ่งที่ตั้งใจไม่ใส่ไว้ใน repository นี้
 
-- Demo data files
-- Production metadata exports
-- Manual dictionary Excel files ของจริง
+- Demo data files: สามารถหาไฟล์ demo ได้ที่ Gold Layer.lh_monitoring_data
+- Production metadata exports: กระบวนการกวาด metadata เริ่มและเสร็จสิ้นใน Fabric เท่านั้น
+- Manual dictionary Excel files ของจริง: เก็บไว้ที่ Sharepoint และทำการ sync มาไว้ที่ Gold Layer.lh_monitoring_data
 - Staging output files
 - Delta/Parquet files
 - PBIX/PBIT binary files
-- Secrets, tokens และ workspace credentials
+- Secrets, tokens และ workspace credentials:
 
 ## Target architecture
 
