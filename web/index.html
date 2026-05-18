@@ -3,62 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Easy Money Data Dictionary Portal</title>
+  <title>Fabric Data Dictionary Portal</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand-block">
-        <div class="brand-mark">↗</div>
+      <div class="brand">
+        <div class="brand-mark">DD</div>
         <div>
-          <p class="eyebrow">Easy Money</p>
+          <p class="eyebrow">Microsoft Fabric</p>
           <h1>Data Dictionary</h1>
         </div>
       </div>
-      <nav class="nav-menu" aria-label="Portal navigation">
+
+      <nav class="nav" aria-label="Data dictionary navigation">
         <button class="nav-item active" data-page="catalog">Catalog Search</button>
         <button class="nav-item" data-page="table">Table Definition</button>
         <button class="nav-item" data-page="column">Column Definition</button>
         <button class="nav-item" data-page="maintenance">Maintenance</button>
       </nav>
-      <div class="sidebar-card">
-        <p class="eyebrow">Dictionary Health</p>
-        <strong id="sidebar-health">92%</strong>
-        <span>definition coverage</span>
-      </div>
+
+      <section class="side-panel">
+        <p class="eyebrow">Latest Sync</p>
+        <strong>06:30 ICT</strong>
+        <span>Gold Layer · governance schema</span>
+      </section>
     </aside>
-    <main class="main-content">
-      <header class="topbar">
+
+    <main class="content">
+      <header class="header">
         <div>
-          <p class="eyebrow">Microsoft Fabric Governance Portal</p>
+          <p class="eyebrow">Internal Governance Portal</p>
           <h2 id="page-title">Catalog Search</h2>
         </div>
-        <div class="topbar-actions">
-          <span class="status-pill">Last sync: <strong>Today 06:00</strong></span>
-          <button class="ghost-button" id="reset-filters">Reset Filters</button>
+        <div class="header-actions">
+          <span class="pill">Mock data · Thai/English</span>
+          <button id="reset-filters" class="ghost-button">Reset</button>
         </div>
       </header>
-      <section class="hero-panel">
+
+      <section class="hero">
         <div>
-          <p class="eyebrow">Search across lakehouse metadata</p>
-          <h3>ค้นหา dataset, table, column และ business definition ได้จากที่เดียว</h3>
-          <p>Interactive data dictionary portal สำหรับทีม Data / Analytics Engineer เพื่อค้นหา metadata, definition coverage และ issue ที่ต้อง maintenance</p>
+          <p class="eyebrow">Search first, ask later</p>
+          <h3>ค้นหา table, column, grain และ business definition ได้ในหน้าเดียว</h3>
+          <p>ออกแบบเป็น minimal portal สำหรับทีม Data / Analytics Engineer โดยใช้ข้อมูลตัวอย่างจากโปรเจกต์ Microsoft Fabric Data Dictionary ที่เราคุยกัน</p>
         </div>
-        <div class="hero-metric"><strong id="hero-count">0</strong><span>catalog objects</span></div>
-      </section>
-      <section class="filter-panel">
-        <div class="search-box"><label for="global-search">Search keyword</label><input id="global-search" type="search" placeholder="เช่น pawn, branch, customer, gold price" /></div>
-        <div class="filter-grid">
-          <label>Domain<select id="domain-filter"><option value="all">All domains</option></select></label>
-          <label>Layer<select id="layer-filter"><option value="all">All layers</option></select></label>
-          <label>Status<select id="status-filter"><option value="all">All statuses</option><option value="Complete">Complete</option><option value="Partial">Partial</option><option value="Missing">Missing</option></select></label>
+        <div class="hero-stat">
+          <strong id="coverage-stat">0%</strong>
+          <span>definition coverage</span>
         </div>
       </section>
-      <section class="page active" id="catalog-page"><div class="section-header"><div><p class="eyebrow">Catalog Search</p><h3>Search Results</h3></div><span class="result-count" id="catalog-count"></span></div><div class="card-grid" id="catalog-cards"></div></section>
-      <section class="page" id="table-page"><div class="section-header"><div><p class="eyebrow">Table Definition</p><h3>Table-level metadata</h3></div><span class="result-count" id="table-count"></span></div><div class="table-wrap"><table><thead><tr><th>Table</th><th>Domain</th><th>Layer</th><th>Grain</th><th>Owner</th><th>Status</th></tr></thead><tbody id="table-body"></tbody></table></div></section>
-      <section class="page" id="column-page"><div class="section-header"><div><p class="eyebrow">Column Definition</p><h3>Column-level dictionary</h3></div><span class="result-count" id="column-count"></span></div><div class="table-wrap"><table><thead><tr><th>Table</th><th>Column</th><th>Data Type</th><th>Business Definition</th><th>PII</th><th>Status</th></tr></thead><tbody id="column-body"></tbody></table></div></section>
-      <section class="page" id="maintenance-page"><div class="section-header"><div><p class="eyebrow">Maintenance</p><h3>Dictionary quality monitoring</h3></div></div><div class="kpi-grid" id="maintenance-kpis"></div><div class="table-wrap maintenance-table"><table><thead><tr><th>Issue Type</th><th>Object</th><th>Severity</th><th>Recommended Action</th></tr></thead><tbody id="issue-body"></tbody></table></div></section>
+
+      <section class="filters" aria-label="Search filters">
+        <label class="search-field">
+          <span>Search keyword</span>
+          <input id="global-search" type="search" placeholder="เช่น pawn, branch, customer, ราคาทอง, grain" />
+        </label>
+        <label><span>Domain</span><select id="domain-filter"><option value="all">All domains</option></select></label>
+        <label><span>Layer</span><select id="layer-filter"><option value="all">All layers</option></select></label>
+        <label><span>Status</span><select id="status-filter"><option value="all">All statuses</option></select></label>
+      </section>
+
+      <section class="page active" id="catalog-page">
+        <div class="section-title">
+          <div><p class="eyebrow">Catalog Search</p><h3>Tables ที่ค้นพบ</h3></div>
+          <span id="catalog-count" class="muted"></span>
+        </div>
+        <div id="catalog-cards" class="catalog-grid"></div>
+      </section>
+
+      <section class="page" id="table-page">
+        <div class="section-title">
+          <div><p class="eyebrow">Table Definition</p><h3>นิยามระดับตาราง</h3></div>
+          <span id="table-count" class="muted"></span>
+        </div>
+        <div class="table-list" id="table-list"></div>
+      </section>
+
+      <section class="page" id="column-page">
+        <div class="section-title">
+          <div><p class="eyebrow">Column Definition</p><h3>นิยามระดับคอลัมน์</h3></div>
+          <span id="column-count" class="muted"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Table</th><th>Column</th><th>Type</th><th>Business Definition</th><th>Usage Note</th><th>Status</th></tr>
+            </thead>
+            <tbody id="column-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="page" id="maintenance-page">
+        <div class="section-title">
+          <div><p class="eyebrow">Maintenance</p><h3>งานค้างและ quality check</h3></div>
+        </div>
+        <div id="kpi-grid" class="kpi-grid"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Issue Type</th><th>Object</th><th>Owner</th><th>Recommended Action</th></tr></thead>
+            <tbody id="issue-body"></tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </div>
   <script src="app.js"></script>
