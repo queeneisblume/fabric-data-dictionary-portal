@@ -1,0 +1,43 @@
+flowchart TD
+    A[00_load_config.ipynb] --> A1[governance.cfg_metadata_source]
+
+    B[01_load_manual_definition.ipynb] --> B1[governance.manual_table_definition]
+    B --> B2[governance.manual_column_definition]
+
+    A1 --> C[02_scan_metadata_to_staging.ipynb]
+    C --> C1[governance.stg_table_metadata]
+    C --> C2[governance.stg_column_metadata]
+
+    B1 --> D[03_build_gold_current_tables.ipynb]
+    B2 --> D
+    C1 --> D
+    C2 --> D
+
+    D --> D1[governance.dim_data_object]
+    D --> D2[governance.dim_column]
+    D --> D3[governance.rpt_data_dictionary_search]
+    D --> D4[governance.rpt_missing_definition]
+    D --> D5[governance.rpt_manual_table_orphan]
+    D --> D6[governance.rpt_manual_column_orphan]
+    D --> D7[governance.fact_metadata_sync_run]
+
+    D1 --> E[04_retention_and_change_tracking.ipynb]
+    D2 --> E
+    C1 --> E
+    C2 --> E
+
+    E --> E1[governance.fact_definition_quality_snapshot]
+    E --> E2[governance.hist_schema_change]
+    E --> E3[Retention on stg_table_metadata]
+    E --> E4[Retention on stg_column_metadata]
+
+    D1 --> P[Power BI Semantic Model]
+    D2 --> P
+    D3 --> P
+    D4 --> P
+    D5 --> P
+    D6 --> P
+    D7 --> P
+    E1 --> P
+
+    P --> R[Data Dictionary Portal]
