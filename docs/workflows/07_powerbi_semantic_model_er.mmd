@@ -1,0 +1,9 @@
+erDiagram
+    DIM_DATA_OBJECT ||--o{ DIM_COLUMN : data_object_id
+    DIM_DATA_OBJECT ||--o{ RPT_MISSING_DEFINITION : table_issue_context
+    DIM_COLUMN ||--o{ RPT_MISSING_DEFINITION : column_issue_context
+    DIM_DATA_OBJECT ||--o{ RPT_DATA_DICTIONARY_SEARCH : table_context
+    DIM_COLUMN ||--o{ RPT_DATA_DICTIONARY_SEARCH : column_context
+
+    FACT_METADATA_SYNC_RUN }o--o{ DIM_DATA_OBJECT : monitoring_only
+    FACT_DEFINITION_QUALITY_SNAPSHOT }o--o{ DIM_DATA_OBJECT : summary_only
