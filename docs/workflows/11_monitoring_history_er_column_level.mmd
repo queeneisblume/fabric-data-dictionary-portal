@@ -1,0 +1,59 @@
+erDiagram
+    STG_TABLE_METADATA ||--o{ FACT_METADATA_SYNC_RUN : summarized_by_sync_run_id
+    DIM_DATA_OBJECT ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : table_coverage_measured
+    DIM_COLUMN ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : column_coverage_measured
+
+    DIM_DATA_OBJECT ||--o{ HIST_SCHEMA_CHANGE : table_change_event
+    DIM_COLUMN ||--o{ HIST_SCHEMA_CHANGE : column_change_event
+
+    FACT_METADATA_SYNC_RUN {
+        string sync_run_id PK
+        string source_id
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        timestamp sync_started_at
+        timestamp sync_finished_at
+        string sync_status
+        int scanned_table_items
+        int success_table_items
+        int failed_table_items
+        int scanned_column_items
+        int failed_column_items
+        string error_message
+        timestamp created_at
+    }
+
+    FACT_DEFINITION_QUALITY_SNAPSHOT {
+        string sync_run_id PK
+        timestamp snapshot_at PK
+        string layer
+        string domain
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        int total_tables
+        int missing_table_description_count
+        int missing_grain_count
+        int total_columns
+        int missing_column_definition_count
+        double column_definition_coverage_pct
+    }
+
+    HIST_SCHEMA_CHANGE {
+        string change_id PK
+        string sync_run_id
+        timestamp detected_at
+        string change_type
+        string object_level
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string old_value
+        string new_value
+        string impact_level
+        string review_status
+        string review_note
+    }
