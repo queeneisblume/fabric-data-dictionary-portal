@@ -1,0 +1,27 @@
+erDiagram
+    CFG_METADATA_SOURCE ||--o{ STG_TABLE_METADATA : scans_source
+    CFG_METADATA_SOURCE ||--o{ STG_COLUMN_METADATA : scans_source
+
+    MANUAL_TABLE_DEFINITION }o--|| DIM_DATA_OBJECT : enriches_by_natural_key
+    MANUAL_COLUMN_DEFINITION }o--|| DIM_COLUMN : enriches_by_natural_key
+
+    STG_TABLE_METADATA }o--|| DIM_DATA_OBJECT : latest_sync_builds
+    STG_COLUMN_METADATA }o--|| DIM_COLUMN : latest_sync_builds
+
+    DIM_DATA_OBJECT ||--o{ DIM_COLUMN : has_columns
+
+    DIM_DATA_OBJECT ||--o{ RPT_DATA_DICTIONARY_SEARCH : contributes_table_context
+    DIM_COLUMN ||--o{ RPT_DATA_DICTIONARY_SEARCH : contributes_column_context
+
+    DIM_DATA_OBJECT ||--o{ RPT_MISSING_DEFINITION : generates_table_issues
+    DIM_COLUMN ||--o{ RPT_MISSING_DEFINITION : generates_column_issues
+
+    MANUAL_TABLE_DEFINITION ||--o{ RPT_MANUAL_TABLE_ORPHAN : unmatched_table_keys
+    MANUAL_COLUMN_DEFINITION ||--o{ RPT_MANUAL_COLUMN_ORPHAN : unmatched_column_keys
+
+    STG_TABLE_METADATA ||--o{ FACT_METADATA_SYNC_RUN : summarized_into
+    DIM_DATA_OBJECT ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : measured_in
+    DIM_COLUMN ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : measured_in
+
+    DIM_DATA_OBJECT ||--o{ HIST_SCHEMA_CHANGE : object_change_history
+    DIM_COLUMN ||--o{ HIST_SCHEMA_CHANGE : column_change_history
