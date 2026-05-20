@@ -1,0 +1,283 @@
+erDiagram
+    CFG_METADATA_SOURCE ||--o{ STG_TABLE_METADATA : source_id
+    CFG_METADATA_SOURCE ||--o{ STG_COLUMN_METADATA : source_id
+    STG_TABLE_METADATA }o--|| DIM_DATA_OBJECT : builds
+    STG_COLUMN_METADATA }o--|| DIM_COLUMN : builds
+    MANUAL_TABLE_DEFINITION }o--|| DIM_DATA_OBJECT : enriches
+    MANUAL_COLUMN_DEFINITION }o--|| DIM_COLUMN : enriches
+    DIM_DATA_OBJECT ||--o{ DIM_COLUMN : data_object_id
+    DIM_DATA_OBJECT ||--o{ RPT_DATA_DICTIONARY_SEARCH : table_context
+    DIM_COLUMN ||--o{ RPT_DATA_DICTIONARY_SEARCH : column_context
+    DIM_DATA_OBJECT ||--o{ RPT_MISSING_DEFINITION : table_issues
+    DIM_COLUMN ||--o{ RPT_MISSING_DEFINITION : column_issues
+    MANUAL_TABLE_DEFINITION ||--o{ RPT_MANUAL_TABLE_ORPHAN : orphan_check
+    MANUAL_COLUMN_DEFINITION ||--o{ RPT_MANUAL_COLUMN_ORPHAN : orphan_check
+    STG_TABLE_METADATA ||--o{ FACT_METADATA_SYNC_RUN : sync_summary
+    DIM_DATA_OBJECT ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : table_quality
+    DIM_COLUMN ||--o{ FACT_DEFINITION_QUALITY_SNAPSHOT : column_quality
+    DIM_DATA_OBJECT ||--o{ HIST_SCHEMA_CHANGE : table_history
+    DIM_COLUMN ||--o{ HIST_SCHEMA_CHANGE : column_history
+
+    CFG_METADATA_SOURCE {
+        string source_id PK
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string domain
+        boolean is_active
+        string include_table_pattern
+        string exclude_table_pattern
+        string owner_team
+        boolean scan_row_count
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    STG_TABLE_METADATA {
+        string sync_run_id PK
+        string source_id FK
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string domain
+        string owner_team
+        long row_count
+        int column_count
+        string scan_status
+        string error_message
+        timestamp scanned_at
+        date sync_date
+    }
+
+    STG_COLUMN_METADATA {
+        string sync_run_id PK
+        string source_id FK
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        int ordinal_position
+        string data_type
+        boolean is_nullable
+        string scan_status
+        string error_message
+        timestamp scanned_at
+        date sync_date
+    }
+
+    MANUAL_TABLE_DEFINITION {
+        string workspace_name PK
+        string lakehouse_name PK
+        string schema_name PK
+        string table_name PK
+        string domain
+        string business_process
+        string table_description
+        string grain_description
+        string recommended_usage
+        string owner_team
+        string business_owner
+        string refresh_frequency
+        string refresh_sla
+        string status
+        timestamp manual_updated_at
+    }
+
+    MANUAL_COLUMN_DEFINITION {
+        string workspace_name PK
+        string lakehouse_name PK
+        string schema_name PK
+        string table_name PK
+        string column_name PK
+        string business_definition
+        string technical_definition
+        string calculation_logic
+        string example_value
+        string usage_note
+        string source_table
+        string source_column
+        string display_column_name
+        boolean is_visible_in_portal
+        timestamp manual_updated_at
+    }
+
+    DIM_DATA_OBJECT {
+        string data_object_id PK
+        string source_id
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string full_table_name
+        string domain
+        string business_process
+        string table_description
+        string grain_description
+        string recommended_usage
+        string owner_team
+        string business_owner
+        string refresh_frequency
+        string refresh_sla
+        string status
+        long row_count
+        int column_count
+        string table_definition_status
+        string grain_definition_status
+        timestamp last_metadata_sync_at
+        timestamp gold_updated_at
+    }
+
+    DIM_COLUMN {
+        string column_id PK
+        string data_object_id FK
+        string source_id
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string display_column_name
+        int ordinal_position
+        string data_type
+        boolean is_nullable
+        string business_definition
+        string technical_definition
+        string calculation_logic
+        string example_value
+        string usage_note
+        string source_table
+        string source_column
+        boolean is_visible_in_portal
+        string column_definition_status
+        timestamp last_metadata_sync_at
+        timestamp gold_updated_at
+    }
+
+    RPT_DATA_DICTIONARY_SEARCH {
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string full_table_name
+        string domain
+        string business_process
+        string table_description
+        string grain_description
+        string recommended_usage
+        string owner_team
+        string business_owner
+        string refresh_frequency
+        string refresh_sla
+        string status
+        long row_count
+        int column_count
+        string column_name
+        string display_column_name
+        int ordinal_position
+        string data_type
+        boolean is_nullable
+        string business_definition
+        string technical_definition
+        string calculation_logic
+        string example_value
+        string usage_note
+        string source_table
+        string source_column
+        string column_definition_status
+        string table_definition_status
+        string grain_definition_status
+        timestamp last_metadata_sync_at
+        string search_text
+    }
+
+    RPT_MISSING_DEFINITION {
+        string issue_type
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string owner_team
+        timestamp last_metadata_sync_at
+    }
+
+    RPT_MANUAL_TABLE_ORPHAN {
+        string issue_type
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string domain
+        string owner_team
+    }
+
+    RPT_MANUAL_COLUMN_ORPHAN {
+        string issue_type
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string business_definition
+    }
+
+    FACT_METADATA_SYNC_RUN {
+        string sync_run_id PK
+        string source_id
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        timestamp sync_started_at
+        timestamp sync_finished_at
+        string sync_status
+        int scanned_table_items
+        int success_table_items
+        int failed_table_items
+        int scanned_column_items
+        int failed_column_items
+        string error_message
+        timestamp created_at
+    }
+
+    FACT_DEFINITION_QUALITY_SNAPSHOT {
+        string sync_run_id PK
+        timestamp snapshot_at PK
+        string layer
+        string domain
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        int total_tables
+        int missing_table_description_count
+        int missing_grain_count
+        int total_columns
+        int missing_column_definition_count
+        double column_definition_coverage_pct
+    }
+
+    HIST_SCHEMA_CHANGE {
+        string change_id PK
+        string sync_run_id
+        timestamp detected_at
+        string change_type
+        string object_level
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string old_value
+        string new_value
+        string impact_level
+        string review_status
+        string review_note
+    }
