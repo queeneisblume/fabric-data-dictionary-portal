@@ -1,0 +1,110 @@
+erDiagram
+    DIM_DATA_OBJECT ||--o{ DIM_COLUMN : data_object_id
+    DIM_DATA_OBJECT ||--o{ RPT_DATA_DICTIONARY_SEARCH : table_context
+    DIM_COLUMN ||--o{ RPT_DATA_DICTIONARY_SEARCH : column_context
+    DIM_DATA_OBJECT ||--o{ RPT_MISSING_DEFINITION : table_level_issues
+    DIM_COLUMN ||--o{ RPT_MISSING_DEFINITION : column_level_issues
+
+    DIM_DATA_OBJECT {
+        string data_object_id PK
+        string source_id
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string full_table_name
+        string domain
+        string business_process
+        string table_description
+        string grain_description
+        string recommended_usage
+        string owner_team
+        string business_owner
+        string refresh_frequency
+        string refresh_sla
+        string status
+        long row_count
+        int column_count
+        string table_definition_status
+        string grain_definition_status
+        timestamp last_metadata_sync_at
+        timestamp gold_updated_at
+    }
+
+    DIM_COLUMN {
+        string column_id PK
+        string data_object_id FK
+        string source_id
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string display_column_name
+        int ordinal_position
+        string data_type
+        boolean is_nullable
+        string business_definition
+        string technical_definition
+        string calculation_logic
+        string example_value
+        string usage_note
+        string source_table
+        string source_column
+        boolean is_visible_in_portal
+        string column_definition_status
+        timestamp last_metadata_sync_at
+        timestamp gold_updated_at
+    }
+
+    RPT_DATA_DICTIONARY_SEARCH {
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string full_table_name
+        string domain
+        string business_process
+        string table_description
+        string grain_description
+        string recommended_usage
+        string owner_team
+        string business_owner
+        string refresh_frequency
+        string refresh_sla
+        string status
+        long row_count
+        int column_count
+        string column_name
+        string display_column_name
+        int ordinal_position
+        string data_type
+        boolean is_nullable
+        string business_definition
+        string technical_definition
+        string calculation_logic
+        string example_value
+        string usage_note
+        string source_table
+        string source_column
+        string column_definition_status
+        string table_definition_status
+        string grain_definition_status
+        timestamp last_metadata_sync_at
+        string search_text
+    }
+
+    RPT_MISSING_DEFINITION {
+        string issue_type
+        string layer
+        string workspace_name
+        string lakehouse_name
+        string schema_name
+        string table_name
+        string column_name
+        string owner_team
+        timestamp last_metadata_sync_at
+    }
