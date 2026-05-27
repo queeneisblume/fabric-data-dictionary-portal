@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fabric Data Dictionary Portal</title>
+  <link rel="stylesheet" href="styles.css?v=20260527-2">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Data Dictionary Portal</h1>
+      <p id="subtitle">Microsoft Fabric data dictionary</p>
+    </div>
+    <div class="topbar-meta">
+      <span id="lastUpdated">Loading JSON snapshot...</span>
+      <button id="resetAll" type="button">Reset</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" aria-label="Portal sections">
+      <button class="tab active" data-page="catalog" type="button">Catalog Search</button>
+      <button class="tab" data-page="tableDetail" type="button">Table Detail</button>
+      <button class="tab" data-page="columns" type="button">Column Dictionary</button>
+      <button class="tab" data-page="maintenance" type="button">Maintenance</button>
+    </nav>
+
+    <section class="page active" id="catalog">
+      <div class="section-title">
+        <div>
+          <h2>Catalog Search</h2>
+          <p>ค้นหา table, column, grain และ business definition จาก snapshot ล่าสุด</p>
+        </div>
+      </div>
+      <section class="kpi-grid">
+        <article class="kpi"><span>Total Tables</span><strong id="kpiTables">-</strong></article>
+        <article class="kpi"><span>Total Columns</span><strong id="kpiColumns">-</strong></article>
+        <article class="kpi"><span>Active Tables</span><strong id="kpiActive">-</strong></article>
+        <article class="kpi"><span>Missing Definition</span><strong id="kpiMissing">-</strong></article>
+        <article class="kpi"><span>Definition Coverage</span><strong id="kpiCoverage">-</strong></article>
+      </section>
+      <section class="filters search-filters">
+        <label><span>Search</span><input id="globalSearch" type="search" placeholder="เช่น pawn, branch, customer, ราคาทอง, grain"></label>
+        <label><span>Domain</span><select id="filterDomain"></select></label>
+        <label><span>Schema</span><select id="filterSchema"></select></label>
+        <label><span>Owner</span><select id="filterOwner"></select></label>
+        <label><span>Status</span><select id="filterStatus"></select></label>
+      </section>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Workspace</th><th>Domain</th><th>Schema</th><th>Table</th><th>Description</th><th>Grain</th><th>Owner</th><th>Status</th></tr></thead>
+          <tbody id="catalogRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="tableDetail">
+      <div class="section-title"><div><h2>Table Detail</h2><p>ดู definition และ column ของ table ที่เลือก</p></div></div>
+      <section class="filters detail-filters">
+        <label><span>Find table or column</span><input id="tableDetailSearch" list="tableDetailSuggestions" type="search" placeholder="ค้นหา table หรือ column"><datalist id="tableDetailSuggestions"></datalist></label>
+        <label><span>Select Table</span><select id="selectedTable"></select></label>
+      </section>
+      <p id="tableDetailSearchNote" class="muted"></p>
+      <section id="tableProfile" class="profile-grid"></section>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Column</th><th>Display Name</th><th>Data Type</th><th>Business Definition</th><th>Technical Definition</th><th>Usage Note</th><th>Visible</th></tr></thead>
+          <tbody id="detailColumnRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="columns">
+      <div class="section-title"><div><h2>Column Dictionary</h2><p>ค้นหา column แบบละเอียดและกรองตาม table, data type, definition status</p></div></div>
+      <section class="filters column-filters">
+        <label><span>Search column</span><input id="columnSearch" type="search" placeholder="ค้นหา column, definition, example value"></label>
+        <label><span>Table</span><select id="filterColumnTable"></select></label>
+        <label><span>Data Type</span><select id="filterDataType"></select></label>
+        <label><span>Definition</span><select id="filterDefinition"></select></label>
+        <label><span>Visible</span><select id="filterVisible"></select></label>
+      </section>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Table</th><th>Column</th><th>Display Name</th><th>Data Type</th><th>Business Definition</th><th>Technical Definition</th><th>Usage Note</th><th>Visible</th></tr></thead>
+          <tbody id="columnRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="page" id="maintenance">
+      <div class="section-title">
+        <div><h2>Maintenance / Missing Definition</h2><p>รายการที่ต้องเติม definition, grain, calculation logic หรือ review กับ owner</p></div>
+        <span id="issueCount" class="pill">-</span>
+      </div>
+      <section class="kpi-grid four">
+        <article class="kpi"><span>Missing Table Description</span><strong id="kpiMissingTable">-</strong></article>
+        <article class="kpi"><span>Missing Grain</span><strong id="kpiMissingGrain">-</strong></article>
+        <article class="kpi"><span>Column Issues</span><strong id="kpiColumnIssues">-</strong></article>
+        <article class="kpi"><span>Review Items</span><strong id="kpiReview">-</strong></article>
+      </section>
+      <section class="filters issue-filters">
+        <label><span>Search issue</span><input id="issueSearch" type="search" placeholder="ค้นหา table, column, owner, issue type"></label>
+        <label><span>Issue Type</span><select id="filterIssueType"></select></label>
+        <label><span>Severity</span><select id="filterSeverity"></select></label>
+        <label><span>Owner</span><select id="filterIssueOwner"></select></label>
+      </section>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Issue Type</th><th>Severity</th><th>Source</th><th>Schema</th><th>Table</th><th>Column</th><th>Owner</th><th>Suggested Action</th></tr></thead>
+          <tbody id="issueRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="app.js?v=20260527-2"></script>
+</body>
+</html>
