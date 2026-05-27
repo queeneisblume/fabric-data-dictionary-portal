@@ -156,6 +156,7 @@ function buildModel(raw) {
       owner_team: text(row.owner_team) || "Unassigned",
       business_owner: text(row.business_owner) || "Unassigned",
       refresh_frequency: titleCase(row.refresh_frequency || row.Frequency || "Unknown"),
+      last_metadata_sync_at: text(row.last_metadata_sync_at),
       status: text(row.status) || "Active",
     };
     item.search_text = normalize(Object.values(item).join(" | "));
@@ -311,16 +312,38 @@ function renderTableDetail() {
 
   const table = state.tables.find((item) => item.table_id === state.selectedTableId);
   if (!table) return;
-  document.querySelector("#tableProfile").innerHTML = [
-    ["Table", tableLabel(table)],
-    ["Workspace", table.workspace_name],
-    ["Lakehouse", table.lakehouse_name],
-    ["Domain", table.domain],
-    ["Owner", table.owner_team],
-    ["Description", table.table_description || "-"],
-    ["Grain", table.grain_description || "-"],
-    ["Recommended Usage", table.recommended_usage || "-"],
-  ].map(([label, value]) => `<article><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></article>`).join("");
+  document.querySelector("#tableProfile").innerHTML = `
+    <section class="table-profile-card">
+      ${[
+        ["Table", table.table_name],
+        ["Workspace", table.workspace_name],
+        ["Lakehouse", table.lakehouse_name],
+        ["Schema", table.schema_name],
+        ["Domain", table.domain],
+        ["Owner", table.owner_team],
+        ["Refresh", table.refresh_frequency],
+        ["Latest Sync At", table.last_metadata_sync_at || "-"],
+        ["Status", badge(table.status)],
+      ].map(([label, value]) => `
+        <div class="profile-row">
+          <b>${escapeHtml(label)}</b>
+          <span>${label === "Status" ? value : escapeHtml(value)}</span>
+        </div>`).join("")}
+    </section>
+    <section class="definition-stack">
+      <article class="definition-card">
+        <h3>Business Description</h3>
+        <p>${escapeHtml(table.table_description || "-")}</p>
+      </article>
+      <article class="definition-card">
+        <h3>Grain</h3>
+        <p>${escapeHtml(table.grain_description || "-")}</p>
+      </article>
+      <article class="definition-card">
+        <h3>Recommended Usage</h3>
+        <p>${escapeHtml(table.recommended_usage || "-")}</p>
+      </article>
+    </section>`;
 
   document.querySelector("#detailColumnRows").innerHTML = tableColumns(table.table_id).map((column) => `
     <tr>
